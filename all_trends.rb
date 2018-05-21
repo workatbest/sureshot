@@ -17,16 +17,12 @@ def get_timeseries(sym)
   timeseries
 end
 
-def calculate_trends(timeseries)
-  high_trends=[]
-  low_trends =[]
-  close_trends = []
-  timelines = []
+def calculate_trends(timeseries, old_sym)
   # get data for only ,ax last 30 days 
   max = timeseries.high.length < DAYS_TO_TRACK ? (timeseries.high.length - 1) : DAYS_TO_TRACK
   count = 0
-  CSV.open("data/#{timeseries.symbol}.csv", 'wb') do |csv|
-    csv << ['Date', 'Close', 'High', 'Low', 'Change']
+  CSV.open("data/#{old_sym}.csv", 'wb') do |csv|
+    csv << ['Date', 'Close', 'High', 'Low', 'Change', 'CMP']
     for count in 0...max
       #p timeseries.close[count+1]
       #p timeseries.close[count]
@@ -37,13 +33,9 @@ def calculate_trends(timeseries)
       close = ((timeseries.close[count][1].to_f - timeseries.close[count+1][1].to_f)/timeseries.close[count+1][1].to_f) * 100
       high = ((timeseries.high[count][1].to_f - timeseries.close[count+1][1].to_f)/timeseries.close[count+1][1].to_f) * 100
       low =  ((timeseries.low[count][1].to_f - timeseries.close[count+1][1].to_f)/timeseries.close[count+1][1].to_f) * 100
-      timelines << timeseries.close[count][1]
       #p (timeseries.low[count][1].to_f - timeseries.close[count-1][1].to_f)
       #p "close : #{close}, high : #{high}, low : #{low}, fluctuation : #{high.abs + low.abs}"
-      csv << [timeseries.close[count][0], close, high, low, (high.abs + low.abs)]
-      close_trends << close
-      high_trends << high
-      low_trends << low
+      csv << [timeseries.close[count][0], close, high, low, (high.abs + low.abs), timeseries.close[count][1]]
       #p "----#{count}-----"
     end
   end
@@ -62,7 +54,7 @@ text.each_line do |sym|
   timeseries = get_timeseries(sym)
   if timeseries
     p timeseries.symbol
-    calculate_trends(timeseries)
+    calculate_trends(timeseries, old_sym)
 
   else
     p "Failed to retrieve data"
