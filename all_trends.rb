@@ -29,7 +29,7 @@ def calculate_trends(timeseries, old_sym)
       close = ((timeseries.close[count][1].to_f - timeseries.close[count+1][1].to_f)/timeseries.close[count+1][1].to_f) * 100
       high = ((timeseries.high[count][1].to_f - timeseries.close[count+1][1].to_f)/timeseries.close[count+1][1].to_f) * 100
       low =  ((timeseries.low[count][1].to_f - timeseries.close[count+1][1].to_f)/timeseries.close[count+1][1].to_f) * 100
-      csv << [timeseries.close[count][0], close, high, low, (high.abs + low.abs)]
+      csv << [timeseries.close[count][0], close, high, low, (high.abs + low.abs), timeseries.close[count][1]]
       high_trends << high if high > 0.0
       #p "----#{count}-----"
     end
