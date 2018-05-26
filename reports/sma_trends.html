@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Trends</title>
+  </head>
+  <body  onload="PopulateDropDownList(); chartFunction()">
+
+    <h3>SMA Trends</h3>
+    <label>Share</label>
+    <select id="nseList" onchange="chartFunction()"></select>
+    <hr>
+    <div id="chart"></div>
+    <hr>
+
+  <style>
+
+  .axis .domain {
+    display: none;
+  }
+
+  .c3-target-Close .c3-target-SMA {
+    display: none;
+  }
+
+  </style>
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/d3.v5.min.js"></script>
+  <script src="../js/c3.js"></script>
+  
+  <script>
+    function PopulateDropDownList() {
+      //Build an array containing Customer records.
+      var list = ["EICHERMOT", "HCLTECH", "MARICO", "MARUTI", "RBLBANK"];
+
+      var nseList = $("#nseList");
+      $(list).each(function () {
+          var option = $("<option />");
+
+          //Set Customer Name in Text part.
+          option.html(this);
+
+          //Add the Option element to DropDownList.
+          nseList.append(option);
+      });
+    }
+    function chartFunction() {
+      var share = document.getElementById("nseList").value;
+      var chart = c3.generate({
+        data: {
+            x: 'Date',
+            url: '../indicator_data/' + share +'.csv',
+            type: 'bar'
+        },
+        axis: {
+          x: {
+            type: 'categorized'
+          },
+          y: {
+            show: true,
+            min: -5,
+            max:  5
+          }
+        },
+        axes: {
+          Close: 'y2',
+          SMA: 'y2',
+        },
+        bar: {
+          width: {
+            ratio: 0.3,
+          },
+        }
+      });
+    }
+  </script>
+
+  </body>
+</html>
