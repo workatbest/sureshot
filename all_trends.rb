@@ -42,7 +42,7 @@ def calculate_indicator_trends(indicatorseries, timeseries, old_sym)
     difference_data << difference.abs
     indicator_trends << [indicatorseries[count][0], timeseries.close[count][1].to_f, indicatorseries[count][1]['SMA'].to_f, difference]
   end
-  if difference_data.max < 3
+  if difference_data.max < 5
     CSV.open("indicator_data/#{old_sym}.csv", 'wb') do |csv|
       csv << ['Date', 'Close', 'SMA', 'Change']
       indicator_trends.each do |data|
