@@ -14,11 +14,11 @@
 
   <style>
 
-  .axis .domain {
+  .c3-target-Close{
     display: none;
   }
 
-  .c3-target-Close .c3-target-SMA {
+  .c3-target-SMA{
     display: none;
   }
 
@@ -30,7 +30,7 @@
   <script>
     function PopulateDropDownList() {
       //Build an array containing Customer records.
-      var list = ["AMARAJABAT", "AXISBANK", "CESC", "CONCOR", "DCBBANK", "DISHTV", "EICHERMOT", "HCLTECH", "HDFC", "ICICIPRULI", "IRB", "ITC", "MANAPPURAM", "MARICO", "MARUTI", "OFSS", "POWERGRID", "RBLBANK", "RELIANCE", "SRF", "TATAGLOBAL", "YESBANK", "ZEEL"];
+      var list = ["CONCOR", "ITC", "ICICIPRULI", "RBLBANK", "AXISBANK", "IRB", "YESBANK", "SRF", "TATAGLOBAL", "MARUTI", "EICHERMOT", "DCBBANK", "POWERGRID", "ZEEL", "OFSS", "HDFC", "HCLTECH", "MARICO", "RELIANCE", "CESC", "AMARAJABAT", "DISHTV", "MANAPPURAM"];
 
       var nseList = $("#nseList");
       $(list).each(function () {
@@ -49,7 +49,15 @@
         data: {
             x: 'Date',
             url: '../indicator_data/' + share +'.csv',
-            type: 'bar'
+            type: 'bar',
+            colors: {
+              Change: function(d) {
+                  return (d.value > 0) ? '#00ff00': '#ff0000';
+              }
+            }
+        },
+        tooltip:{
+          order: null
         },
         axis: {
           x: {

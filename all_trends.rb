@@ -1,9 +1,12 @@
 require 'alphavantagerb'
 require 'csv'
+require 'fileutils'
 
 DAYS_TO_TRACK=90
 PERCENT_THRESHOLD=8.0
 SECRET_KEY='1OBOFRNE6KND478D'
+INDICATOR_PERCENT=5
+INDICATOR_DAYS=10
 
 def get_timeseries(sym)
   for i in 0...5
@@ -35,21 +38,21 @@ end
 
 def calculate_indicator_trends(indicatorseries, timeseries, old_sym)
   indicator_trends=[]
-  difference_data=[]
-  for count in 0...10
+  difference_data=[] 
+  for count in 0...INDICATOR_DAYS
     # Calculate the trend by comparing difference with closing price  
-    difference = ((indicatorseries[count][1]['SMA'].to_f - timeseries.close[count][1].to_f)/timeseries.close[count][1].to_f) * 100
+    difference = ((timeseries.close[count][1].to_f - indicatorseries[count][1]['SMA'].to_f)/timeseries.close[count][1].to_f) * 100
     difference_data << difference.abs
     indicator_trends << [indicatorseries[count][0], timeseries.close[count][1].to_f, indicatorseries[count][1]['SMA'].to_f, difference]
   end
-  if difference_data.max < 5
+  if difference_data.max < INDICATOR_PERCENT
     CSV.open("indicator_data/#{old_sym}.csv", 'wb') do |csv|
       csv << ['Date', 'Close', 'SMA', 'Change']
       indicator_trends.each do |data|
         csv << data
       end
     end
-    return old_sym
+    return difference_data[0]
   end
 end
 
@@ -76,11 +79,12 @@ end
 #client = Alphavantage::Client.new key: '1OBOFRNE6KND478D'
 #client.verbose = true
 
+FileUtils.rm_rf("indicator_data/.", secure: true)
 text=File.open('nse_fut_list.txt').read
 text.gsub!(/\r\n?/, "\n")
 
 sorted_list = {}
-indicator_list = []
+indicator_list = {}
 text.each_line do |sym|
   sym.delete!("\n")
   old_sym = sym
@@ -88,7 +92,7 @@ text.each_line do |sym|
   timeseries = get_timeseries(sym)
   data = indicator(sym)
   indicator_data = calculate_indicator_trends(data, timeseries, old_sym) if data
-  indicator_list << old_sym if indicator_data
+  indicator_list[old_sym] = indicator_data if indicator_data
   if timeseries
     p timeseries.symbol
     avg = calculate_trends(timeseries, old_sym)
@@ -97,6 +101,9 @@ text.each_line do |sym|
     p "Failed to retrieve data"
   end
 end
-p indicator_list , "--------"
+indicator_list = indicator_list.sort_by { |name, value| value }
+p indicator_list.to_h.keys , "--------"
+
 sorted_list = sorted_list.sort_by { |name, value| value }
 p sorted_list.to_h.keys
+
