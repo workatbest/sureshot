@@ -46,7 +46,7 @@
       });
     }
     function chartFunction() {
-      var share = document.getElementById("nseList").value;
+      var share = document.getElementById("nseList").value.split(":")[1];
       var chart = c3.generate({
         data: {
             x: 'Date',
