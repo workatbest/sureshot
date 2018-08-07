@@ -5,7 +5,7 @@ require 'fileutils'
 DAYS_TO_TRACK=90
 PERCENT_THRESHOLD=8.0
 SECRET_KEY='1OBOFRNE6KND478D'
-INDICATOR_PERCENT=5
+INDICATOR_PERCENT=20
 INDICATOR_DAYS=10
 
 def get_timeseries(sym)
@@ -58,7 +58,7 @@ end
 
 def calculate_trends(timeseries, old_sym)
   high_trends=[]
-  # get data for only ,ax last 30 days 
+  # get data for only max last 30 days 
   max = timeseries.high.length < DAYS_TO_TRACK ? (timeseries.high.length - 1) : DAYS_TO_TRACK
   count = 0
   CSV.open("data/#{old_sym}.csv", 'wb') do |csv|

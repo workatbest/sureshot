@@ -14,7 +14,8 @@
       
     </script>
     <hr>
-    <div id="chart"></div>
+    <div id="bar_chart"></div>
+    <div id="pie_chart"></div>
     <hr>
 
   <style>
@@ -40,7 +41,7 @@
   <script>
     function PopulateDropDownList() {
       //Build an array containing Customer records.
-      var list = ["HDFCBANK", "POWERGRID", "COLPAL", "BRITANNIA", "HINDUNILVR", "ITC", "MARUTI", "HDFC", "NTPC", "KOTAKBANK", "ASIANPAINT", "WIPRO", "INDUSINDBK", "HEROMOTOCO", "DABUR", "RBLBANK", "LT", "NESTLEIND", "BHARATFIN", "MARICO", "TCS", "ZEEL", "PIDILITIND", "RELIANCE", "MRF", "ULTRACEMCO", "OFSS", "BOSCHLTD", "TATACHEM", "GODREJCP", "BAJAJ-AUTO", "EICHERMOT", "INFY", "ONGC", "HCLTECH", "COALINDIA", "NHPC", "APOLLOTYRE", "LICHSGFIN", "SHREECEM", "AMBUJACEM", "SIEMENS", "CUMMINSIND", "CASTROLIND", "EXIDEIND", "GLENMARK", "ACC", "KAJARIACER", "GRASIM", "TATAPOWER", "BAJAJFINSV", "CIPLA", "ADANIPORTS", "BATAINDIA", "RAMCOCEM", "GODREJIND", "CESC", "BERGEPAINT", "HINDZINC", "TATACOMM", "BHARATFORG", "PEL", "TORNTPHARM", "TECHM", "TVSMOTOR", "YESBANK", "GAIL", "MOTHERSUMI", "AMARAJABAT", "HAVELLS", "TATAELXSI", "ICICIPRULI", "CHOLAFIN", "MGL", "AUROPHARMA", "PETRONET", "AXISBANK", "DALMIABHA", "OIL", "JSWSTEEL", "IBULHSGFIN", "INFRATEL", "CADILAHC", "NMDC", "VOLTAS", "IOC", "BAJFINANCE", "APOLLOHOSP", "IGL", "ICICIBANK", "TATASTEEL", "TATAMOTORS", "TATAMTRDVR", "ENGINERSIN", "MFSL", "EQUITAS", "LUPIN", "BHEL", "UPL", "JUBLFOOD", "CAPF", "CHENNPETRO", "BHARTIARTL", "BPCL", "CEATLTD", "SUNPHARMA", "CENTURYTEX", "DCBBANK", "IDFC", "PAGEIND", "INDIGO", "DRREDDY", "VGUARD", "IDFCBANK", "BALKRISIND", "TITAN", "REPCOHOME", "ARVIND", "ESCORTS", "VEDL", "FEDERALBNK", "PVR", "AJANTPHARM", "DISHTV", "MUTHOOTFIN", "NBCC", "GODFRYPHLP", "HINDALCO", "BEL", "SRF", "UJJIVAN", "UBL", "KTKBANK", "RAYMOND", "MCX", "MRPL", "DHFL", "ASHOKLEY", "KSCL", "SUNTV", "KPIT", "PTC", "RECLTD", "PFC", "IRB", "SRTRANSFIN", "TORNTPOWER", "BIOCON", "DIVISLAB", "HINDPETRO", "TATAGLOBAL", "SBIN", "SOUTHBANK", "RELINFRA", "MANAPPURAM", "CANFINHOME", "GSFC", "WOCKPHARMA", "INDIACEM", "HEXAWARE", "GRANULES", "INFIBEAM", "SUZLON", "TV18BRDCST", "CGPOWER", "NATIONALUM", "BEML", "JISLJALEQS", "ALBK", "IFCI", "ANDHRABANK", "INDIANB", "NCC", "SREINFRA", "IDEA", "RELCAPITAL", "SAIL", "RPOWER", "SYNDIBANK", "BALRAMCHIN", "BANKBARODA", "STAR", "ORIENTBANK", "JETAIRWAYS", "UNIONBANK", "JINDALSTEL", "CANBK", "GMRINFRA", "BANKINDIA", "ADANIENT", "IDBI", "ADANIPOWER", "JUSTDIAL", "PNB", "HCC", "RNAVAL", "JPASSOCIAT", "RCOM", "PCJEWELLER"];
+      var list = ["HDFCBANK", "POWERGRID", "COLPAL", "BRITANNIA", "HINDUNILVR", "ITC", "NTPC", "MARUTI", "HDFC", "KOTAKBANK", "ASIANPAINT", "WIPRO", "INDUSINDBK", "HEROMOTOCO", "DABUR", "RBLBANK", "NESTLEIND", "BHARATFIN", "LT", "MARICO", "MRF", "TCS", "ZEEL", "PIDILITIND", "RELIANCE", "ULTRACEMCO", "OFSS", "BOSCHLTD", "TATACHEM", "GODREJCP", "EICHERMOT", "BAJAJ-AUTO", "INFY", "ONGC", "SHREECEM", "HCLTECH", "COALINDIA", "NHPC", "LICHSGFIN", "AMBUJACEM", "CUMMINSIND", "SIEMENS", "CASTROLIND", "EXIDEIND", "GLENMARK", "ACC", "KAJARIACER", "CONCOR", "BAJAJFINSV", "TATAPOWER", "GRASIM", "BERGEPAINT", "CIPLA", "BATAINDIA", "GODREJIND", "TATACOMM", "CESC", "RAMCOCEM", "HINDZINC", "ADANIPORTS", "BHARATFORG", "PEL", "TORNTPHARM", "TECHM", "YESBANK", "TVSMOTOR", "GAIL", "MOTHERSUMI", "IOC", "AMARAJABAT", "TATAELXSI", "CHOLAFIN", "ICICIPRULI", "AUROPHARMA", "HAVELLS", "MGL", "PETRONET", "DALMIABHA", "JSWSTEEL", "APOLLOTYRE", "AXISBANK", "IBULHSGFIN", "OIL", "INFRATEL", "CADILAHC", "BAJFINANCE", "VOLTAS", "TATASTEEL", "IGL", "APOLLOHOSP", "NMDC", "DRREDDY", "TATAMTRDVR", "ICICIBANK", "TATAMOTORS", "CEATLTD", "FEDERALBNK", "LUPIN", "EQUITAS", "ENGINERSIN", "DCBBANK", "BHEL", "REPCOHOME", "CAPF", "BPCL", "UPL", "JUBLFOOD", "MFSL", "CHENNPETRO", "BHARTIARTL", "TITAN", "SUNPHARMA", "CENTURYTEX", "PAGEIND", "VGUARD", "ARVIND", "IDFCBANK", "BALKRISIND", "DISHTV", "VEDL", "IDFC", "ESCORTS", "INDIGO", "PVR", "AJANTPHARM", "MUTHOOTFIN", "NBCC", "GODFRYPHLP", "HINDALCO", "BEL", "KTKBANK", "UJJIVAN", "RAYMOND", "SRF", "UBL", "MCX", "MRPL", "DHFL", "SUNTV", "ASHOKLEY", "HINDPETRO", "KPIT", "PFC", "PTC", "KSCL", "RECLTD", "IRB", "SRTRANSFIN", "TORNTPOWER", "BIOCON", "DIVISLAB", "TATAGLOBAL", "SBIN", "SOUTHBANK", "GSFC", "MANAPPURAM", "RELINFRA", "CANFINHOME", "WOCKPHARMA", "INDIACEM", "HEXAWARE", "GRANULES", "INFIBEAM", "SUZLON", "TV18BRDCST", "CGPOWER", "NATIONALUM", "BEML", "JISLJALEQS", "ALBK", "IFCI", "NCC", "INDIANB", "ANDHRABANK", "SREINFRA", "IDEA", "RELCAPITAL", "SAIL", "RPOWER", "SYNDIBANK", "BANKBARODA", "STAR", "BALRAMCHIN", "ORIENTBANK", "JETAIRWAYS", "UNIONBANK", "JINDALSTEL", "CANBK", "GMRINFRA", "BANKINDIA", "ADANIENT", "IDBI", "ADANIPOWER", "JUSTDIAL", "PNB", "HCC", "RNAVAL", "JPASSOCIAT", "PCJEWELLER", "RCOM"];
 
       var nseList = $("#nseList");
       var count = 1
@@ -61,7 +62,22 @@
         var items = [];
         $.each( data, function( key, val ) {
           if (val[0] == share) {
-            document.getElementById("stdev").innerHTML = "STDEV : " + val[1];
+            document.getElementById("stdev").innerHTML = "STDEV : " + val[1][0];
+            var pie_chart = c3.generate({
+                bindto: '#pie_chart',
+                data: {
+                  // iris data from R
+                  columns: [
+                    ['positive', val[1][1]],
+                    ['negative', val[1][2]]
+                  ],
+                  type : 'pie',
+                  colors: {
+                    positive: '#00ff00',
+                    negative: '#ff0000'
+                  }
+                }
+            });
           }
         });
        
@@ -70,7 +86,8 @@
           html: items.join( "" )
         }).appendTo( "body" );
       });
-      var chart = c3.generate({
+      var bar_chart = c3.generate({
+        bindto: '#bar_chart',
         data: {
             x: 'Date',
             url: '../volatile_data/' + share +'.csv',
@@ -101,6 +118,7 @@
           },
         }
       });
+      
     }
   </script>
 

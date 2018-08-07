@@ -1,0 +1,21 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    alphavantagerb (1.2.0)
+      httparty (= 0.15.6)
+      humanize (= 1.7.0)
+    descriptive_statistics (2.5.1)
+    httparty (0.15.6)
+      multi_xml (>= 0.5.2)
+    humanize (1.7.0)
+    multi_xml (0.6.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  alphavantagerb
+  descriptive_statistics
+
+BUNDLED WITH
+   1.12.5

@@ -14,15 +14,16 @@ class VolatilityTrends
     CSV.open("volatile_data/#{old_sym}.csv", 'wb') do |csv|
       csv << ['Date', 'Close', 'DailyReturn']
       for count in 0...max
-        next if timeseries.close[count][1].to_f == 0.0
         prev_day_close = timeseries.close[count+1][1].to_f == 0.0 ? timeseries.close[count+2][1].to_f : timeseries.close[count+1][1].to_f
         # Calculate the trend by comparing difference with closing price  
-        dr = Math.log(timeseries.close[count][1].to_f/prev_day_close) * 100.0
+        dr = Math.log(timeseries.close[count][1].to_f/timeseries.close[count+1][1].to_f) * 100.0
+        next if dr.infinite? or dr.nan?
         csv << [timeseries.close[count][0], timeseries.close[count][1].to_f, dr]
         dr_trends << dr
       end
     end
-    dr_trends.standard_deviation
+    positive_data = dr_trends.select { |item| item > 0.0 }
+    return dr_trends.standard_deviation, positive_data.length, (dr_trends.length - positive_data.length)
   end
 
   def volatility
@@ -39,14 +40,12 @@ class VolatilityTrends
       timeseries = CommonUtils.get_timeseries(sym)
       if timeseries
         p timeseries.symbol
-        avg = calculate_daily_returns(timeseries, old_sym)
-        p avg
-        sorted_list[old_sym] = avg unless avg.nan?
+        sorted_list[old_sym] = calculate_daily_returns(timeseries, old_sym)
       else
         p "Failed to retrieve data"
       end
     end
-    sorted_list = sorted_list.sort_by { |name, value| value }
+    sorted_list = sorted_list.sort_by { |name, value| value[0] }
     p sorted_list.to_h.keys
     File.open("volatile_data/summary.json","w") do |f|
       f.write(sorted_list.to_json)
