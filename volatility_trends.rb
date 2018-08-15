@@ -47,6 +47,9 @@ class VolatilityTrends
     end
     sorted_list = sorted_list.sort_by { |name, value| value[0] }
     p sorted_list.to_h.keys
+    File.open("volatile_data/summary.txt", "w+") do |f|
+      f.puts(sorted_list.to_h.keys)
+    end
     File.open("volatile_data/summary.json","w") do |f|
       f.write(sorted_list.to_json)
     end

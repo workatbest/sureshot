@@ -41,20 +41,23 @@
   <script>
     function PopulateDropDownList() {
       //Build an array containing Customer records.
-      var list = ["HDFCBANK", "POWERGRID", "COLPAL", "BRITANNIA", "HINDUNILVR", "ITC", "NTPC", "HDFC", "MARUTI", "KOTAKBANK", "ASIANPAINT", "WIPRO", "INDUSINDBK", "DABUR", "HEROMOTOCO", "RBLBANK", "BHARATFIN", "NESTLEIND", "LT", "MARICO", "MRF", "ZEEL", "TCS", "PIDILITIND", "OFSS", "RELIANCE", "ULTRACEMCO", "BOSCHLTD", "TATACHEM", "GODREJCP", "BAJAJ-AUTO", "EICHERMOT", "INFY", "SHREECEM", "ONGC", "HCLTECH", "COALINDIA", "NHPC", "GLENMARK", "LICHSGFIN", "AMBUJACEM", "EXIDEIND", "CUMMINSIND", "SIEMENS", "CASTROLIND", "KAJARIACER", "BAJAJFINSV", "ACC", "CONCOR", "GODREJIND", "CIPLA", "TATAPOWER", "CESC", "GRASIM", "BERGEPAINT", "TATACOMM", "BATAINDIA", "RAMCOCEM", "ADANIPORTS", "HINDZINC", "BHARATFORG", "PEL", "TECHM", "APOLLOTYRE", "TORNTPHARM", "HAVELLS", "CADILAHC", "MGL", "YESBANK", "GAIL", "MOTHERSUMI", "IOC", "TVSMOTOR", "AMARAJABAT", "AUROPHARMA", "TATAELXSI", "DALMIABHA", "CHOLAFIN", "ICICIPRULI", "JSWSTEEL", "BAJFINANCE", "PETRONET", "TATAMTRDVR", "DRREDDY", "IBULHSGFIN", "INFRATEL", "TATAMOTORS", "OIL", "AXISBANK", "TATASTEEL", "APOLLOHOSP", "IGL", "VOLTAS", "EQUITAS", "CEATLTD", "DCBBANK", "FEDERALBNK", "NMDC", "ENGINERSIN", "ICICIBANK", "REPCOHOME", "CAPF", "BHEL", "JUBLFOOD", "LUPIN", "CENTURYTEX", "CHENNPETRO", "BPCL", "UPL", "MFSL", "SUNPHARMA", "TITAN", "ESCORTS", "KSCL", "BHARTIARTL", "VGUARD", "BALKRISIND", "ARVIND", "MRPL", "DISHTV", "GODFRYPHLP", "IDFC", "IDFCBANK", "VEDL", "PAGEIND", "MUTHOOTFIN", "PVR", "AJANTPHARM", "INDIGO", "NBCC", "SRF", "RAYMOND", "KTKBANK", "BEL", "HINDALCO", "DHFL", "UBL", "MCX", "KPIT", "UJJIVAN", "PTC", "SUNTV", "HINDPETRO", "ASHOKLEY", "TORNTPOWER", "PFC", "IRB", "RECLTD", "SRTRANSFIN", "BIOCON", "DIVISLAB", "TATAGLOBAL", "SBIN", "SOUTHBANK", "RELINFRA", "MANAPPURAM", "GSFC", "CANFINHOME", "INDIACEM", "WOCKPHARMA", "GRANULES", "HEXAWARE", "INFIBEAM", "SUZLON", "CGPOWER", "TV18BRDCST", "BEML", "JISLJALEQS", "NATIONALUM", "IFCI", "NCC", "ALBK", "INDIANB", "ANDHRABANK", "SREINFRA", "IDEA", "RELCAPITAL", "SAIL", "SYNDIBANK", "RPOWER", "BALRAMCHIN", "BANKBARODA", "STAR", "ORIENTBANK", "JINDALSTEL", "JETAIRWAYS", "UNIONBANK", "GMRINFRA", "CANBK", "ADANIENT", "BANKINDIA", "IDBI", "ADANIPOWER", "JUSTDIAL", "PNB", "HCC", "RNAVAL", "JPASSOCIAT", "PCJEWELLER", "RCOM"];
+      $.get("../volatile_data/summary.txt", function(data) {
+        alert(data)
+        var new_list = data.split('\n');
+        alert(new_list);
+        var nseList = $("#nseList");
+        var count = 1
+        $(new_list).each(function () {
+            var option = $("<option />");
 
-      var nseList = $("#nseList");
-      var count = 1
-      $(list).each(function () {
-          var option = $("<option />");
+            //Set Customer Name in Text part.
+            option.html(count.toString() + ":" + this);
+            count += 1
 
-          //Set Customer Name in Text part.
-          option.html(count.toString() + ":" + this);
-          count += 1
-
-          //Add the Option element to DropDownList.
-          nseList.append(option);
-      });
+            //Add the Option element to DropDownList.
+            nseList.append(option);
+        });
+      }, 'text');
     }
     function chartFunction() {
       var share = document.getElementById("nseList").value.split(":")[1];
