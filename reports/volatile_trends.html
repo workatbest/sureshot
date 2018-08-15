@@ -42,9 +42,7 @@
     function PopulateDropDownList() {
       //Build an array containing Customer records.
       $.get("../volatile_data/summary.txt", function(data) {
-        alert(data)
         var new_list = data.split('\n');
-        alert(new_list);
         var nseList = $("#nseList");
         var count = 1
         $(new_list).each(function () {
