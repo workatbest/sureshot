@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require_relative 'common_utils'
 require 'csv'
 require 'fileutils'
