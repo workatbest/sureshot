@@ -4,8 +4,14 @@ require_relative 'common_utils'
 require 'csv'
 require 'fileutils'
 require 'descriptive_statistics'
+require 'date'
+require 'pry'
 
 class VolatilityTrends
+
+  class MonthDates
+    attr_accessor :start_date, :end_date 
+  end
 
   DAYS_TO_TRACK=250
 
@@ -26,6 +32,29 @@ class VolatilityTrends
     end
     positive_data = dr_trends.select { |item| item > 0.0 }
     return dr_trends.standard_deviation, positive_data.length, (dr_trends.length - positive_data.length)
+  end
+
+  def calculate_month_dates
+    start_date = Date.today - DAYS_TO_TRACK
+    binding.pry()
+    while(start_date < Date.today)
+      binding.pry()
+      last_day = Date.civil(start_date.year, start_date.month, -1)
+      last_friday = find_date(last_day, 5)
+      prev_month = start_date.month == 1 ? 12 : start_date.month - 1
+      prev_year = prev_month == 12 ? start_date.year - 1 : start_date.year
+      last_thurday = find_date(Date.civil(prev_year, prev_month, -1), 4)
+      binding.pry()
+      p "#{last_friday.strftime('%Y-%m-%d')}  ---- #{last_thurday.strftime('%Y-%m-%d')}"
+      start_date = last_thurday
+    end
+  end
+
+  def find_date(day, wday)
+    until day.wday == wday
+      day -= 1
+    end
+    day
   end
 
   def volatility
@@ -59,5 +88,6 @@ class VolatilityTrends
 end
 
 vt = VolatilityTrends.new
-vt.volatility
+vt.calculate_month_dates
+#vt.volatility
 
