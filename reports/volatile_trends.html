@@ -10,12 +10,10 @@
     <label>Share</label>
     <select id="nseList" onchange="chartFunction()"></select>
     <label id="stdev"></label>
-    <script>
-      
-    </script>
     <hr>
     <div id="bar_chart"></div>
     <div id="pie_chart"></div>
+    <div id="monthly_bar_chart"></div>
     <hr>
 
   <style>
@@ -112,6 +110,27 @@
         },
         axes: {
           Close: 'y2',
+        },
+        bar: {
+          width: {
+            ratio: 0.3,
+          },
+        }
+      });
+
+      var monthly_bar_chart = c3.generate({
+        bindto: '#monthly_bar_chart',
+        data: {
+            x: 'Date',
+            url: '../monthly_data/' + share +'.csv',
+            type: 'bar',
+            labels: true
+        },
+        axis: {
+          y: {
+            min: 0,
+            max:  10
+          }
         },
         bar: {
           width: {

@@ -17,5 +17,5 @@ class CommonUtils
       end
     end
     timeseries
-  end 
+  end
 end
