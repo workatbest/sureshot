@@ -123,14 +123,19 @@
         data: {
             x: 'Date',
             url: '../monthly_data/' + share +'.csv',
-            type: 'bar',
-            labels: true
+            type: 'bar'
+        },
+        tooltip:{
+          order: null
         },
         axis: {
-          y: {
-            min: 0,
-            max:  10
-          }
+          x: {
+            type: 'categorized',
+            show: false
+          },
+        },
+        axes: {
+          Close: 'y2',
         },
         bar: {
           width: {
