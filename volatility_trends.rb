@@ -44,7 +44,7 @@ class VolatilityTrends
       prev_year = prev_month == 12 ? start_date.year - 1 : start_date.year
       last_month_data = find_data(find_date(Date.civil(prev_year, prev_month, -1), 4).next, timeseries)
       #p data, last_month_data
-      monthly_data << ["#{last_month_data['day']}##{data['day']}" , ((data['value'] - last_month_data['value']).abs/last_month_data['value']) * 100.0 ]
+      monthly_data << ["#{last_month_data['day']}##{data['day']}" , ((data['value'] - last_month_data['value'])/last_month_data['value']) * 100.0 ]
       next_month = start_date.month == 12 ? 1 : start_date.month + 1
       next_month_year = next_month == 1 ? start_date.year + 1 : start_date.year
       start_date = Date.civil(next_month_year, next_month,-1)
