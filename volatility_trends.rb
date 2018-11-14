@@ -5,7 +5,6 @@ require 'csv'
 require 'fileutils'
 require 'descriptive_statistics'
 require 'date'
-require 'pry'
 
 class VolatilityTrends
 
