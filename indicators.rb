@@ -54,9 +54,9 @@ class Indicators
         ema_data = CommonUtils.indicator_data(sym, 'EMA', 20)&.ema
         daily_data = CommonUtils.get_timeseries(sym, 'compact')&.close 
         if sma_data && sma_200_data && ema_data && daily_data
-          p "EMA:", ema_data[1], ema_data[0]
-          p "SMA:", sma_data[1], sma_data[0]
-          p "CLOSE:", daily_data[1], daily_data[0]
+          #p "EMA:", ema_data[1], ema_data[0]
+          #p "SMA:", sma_data[1], sma_data[0]
+          #p "CLOSE:", daily_data[1], daily_data[0]
           calculate_sma_ema(old_sym, csv, sma_data, sma_200_data, ema_data, daily_data)
         end
       end
