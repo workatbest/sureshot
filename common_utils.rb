@@ -33,8 +33,11 @@ class CommonUtils
   end
 
   def self.nse_list
-    FileUtils.rm_rf("indicator_data/.", secure: true)
     text=File.open('nse_fut_list.txt').read
     text.gsub!(/\r\n?/, "\n")
+  end
+
+  def self.indicators_list
+    File.open('indicators_list.txt').read
   end
 end
