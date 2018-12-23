@@ -13,6 +13,8 @@ class VolatilityTrends
   end
 
   DAYS_TO_TRACK=250
+  BEAR_BULL_COMAPRE=0.003
+  DIFFERENCE_CANDLE=0.25
 
   def calculate_daily_returns(timeseries, old_sym)
     dr_trends=[]
@@ -75,6 +77,75 @@ class VolatilityTrends
     end
   end
 
+  def bear_bull_finder(timeseries, old_sym, csv)
+    # check if the candle difference valid for 4 days
+    found = true
+    for count in 0...4
+      #p timeseries.close[count][1], timeseries.open[count][1]
+      base = timeseries.close[count][1].to_f < timeseries.open[count][1].to_f ? timeseries.close[count][1].to_f : timeseries.open[count][1].to_f
+      if (((timeseries.close[count][1].to_f - timeseries.open[count][1].to_f).abs/base) * 100) < DIFFERENCE_CANDLE
+        found = false
+        break
+      end
+    end
+    if found
+      # check if todays open is above prev days clpse by compare value 
+      #p "Bear #{(timeseries.close[1][1].to_f - (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE))}"
+      #p "Bull #{(timeseries.close[0][1].to_f - (timeseries.close[0][1].to_f * BEAR_BULL_COMAPRE))}"
+      if (timeseries.close[0][1].to_f - (timeseries.close[0][1].to_f * BEAR_BULL_COMAPRE)) > timeseries.open[1][1].to_f
+        # bull finder
+        bull = true
+        for count in 1...3
+          #p " Prev open - #{timeseries.open[count+1][1]}  close #{timeseries.close[count+1][1]}"
+          #p " today open - #{timeseries.open[count][1]}  close #{timeseries.close[count][1]}"
+          #p (timeseries.open[count+1][1].to_f * BEAR_BULL_COMAPRE)
+          #p (timeseries.open[count+1][1].to_f - (timeseries.open[count+1][1].to_f * BEAR_BULL_COMAPRE))
+          if (timeseries.open[count+1][1].to_f - (timeseries.open[count+1][1].to_f * BEAR_BULL_COMAPRE)) < timeseries.open[count][1].to_f 
+            if timeseries.close[count+1][1].to_f > timeseries.open[count][1].to_f
+              bull = true
+            else
+              bull = false
+            end
+          else
+            bull = false
+          end
+          break unless bull
+        end
+        if bull
+          p "Found bull ----  #{old_sym}"
+          csv << [old_sym, 'BULL', timeseries.close[0][1], timeseries.close[1][1], date_to_s]  
+        end
+      elsif (timeseries.close[1][1].to_f - (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE)) < timeseries.open[0][1].to_f
+        # bear finder
+        bear = true
+        for count in 1...3
+          #p " Prev open - #{timeseries.open[count+1][1]}  close #{timeseries.close[count+1][1]}"
+          #p " today open - #{timeseries.open[count][1]}  close #{timeseries.close[count][1]}"
+          #p (timeseries.open[count+1][1].to_f * BEAR_BULL_COMAPRE)
+          #p (timeseries.open[count+1][1].to_f + (timeseries.open[count+1][1].to_f * BEAR_BULL_COMAPRE))
+          if (timeseries.open[count+1][1].to_f + (timeseries.open[count+1][1].to_f * BEAR_BULL_COMAPRE)) < timeseries.open[count][1].to_f 
+            if timeseries.close[count+1][1].to_f < timeseries.close[count][1].to_f
+              bear = true
+            else
+              bear = false
+            end
+          else
+            bear = false
+          end
+          break unless bear
+        end
+        if bear 
+          p "Found bear----  #{old_sym}" 
+          csv << [old_sym, 'BEAR', timeseries.close[0][1], timeseries.close[1][1], date_to_s]
+        end
+      end
+    end
+  end
+
+  def date_to_s
+    Date.today.to_s
+  end
+
   def volatility
     FileUtils.rm_rf("indicator_data/.", secure: true)
     text=File.open('nse_fut_list.txt').read
@@ -105,9 +176,36 @@ class VolatilityTrends
       f.write(sorted_list.to_json)
     end
   end
+
+  def bear_bull
+    FileUtils.rm_rf("indicator_data/.", secure: true)
+
+    text=File.open('nse_fut_list.txt').read
+    text.gsub!(/\r\n?/, "\n")
+
+    sorted_list = {}
+    indicator_list = {}
+    monthly_data = {}
+
+    CSV.open("indicators/bear_bull_indicator.csv", 'wb') do |csv|
+      csv << ['Name', 'Type', 'Buy Price', 'Stop Loss', 'Date']
+      text.each_line do |sym|
+        sym.delete!("\n")
+        old_sym = sym
+        sym = 'NSE:' + sym
+        timeseries = CommonUtils.get_timeseries(sym)
+        if timeseries
+          p timeseries.symbol
+          bear_bull_finder(timeseries,old_sym,csv)
+        else
+          p "Failed to retrieve data"
+        end
+      end
+    end
+  end
 end
 
 vt = VolatilityTrends.new
 #vt.calculate_month_dates
-vt.volatility
-
+#vt.volatility
+vt.bear_bull
