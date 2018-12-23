@@ -90,9 +90,10 @@ class VolatilityTrends
     end
     if found
       # check if todays open is above prev days clpse by compare value 
+      #p (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE)
       #p "Bear #{(timeseries.close[1][1].to_f - (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE))}"
       #p "Bull #{(timeseries.close[0][1].to_f - (timeseries.close[0][1].to_f * BEAR_BULL_COMAPRE))}"
-      if (timeseries.close[0][1].to_f - (timeseries.close[0][1].to_f * BEAR_BULL_COMAPRE)) > timeseries.open[1][1].to_f
+      if (timeseries.close[1][1].to_f + (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE)) < timeseries.open[0][1].to_f && timeseries.open[1][1] > timeseries.open[0][1] && timeseries.close[0][1] > timeseries.open[0][1]
         # bull finder
         bull = true
         for count in 1...3
@@ -115,7 +116,7 @@ class VolatilityTrends
           p "Found bull ----  #{old_sym}"
           csv << [old_sym, 'BULL', timeseries.close[0][1], timeseries.close[1][1], date_to_s]  
         end
-      elsif (timeseries.close[1][1].to_f - (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE)) < timeseries.open[0][1].to_f
+      elsif (timeseries.close[1][1].to_f - (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE)) > timeseries.open[0][1].to_f && timeseries.close[1][1] > timeseries.close[0][1] && timeseries.close[0][1] < timeseries.open[0][1]
         # bear finder
         bear = true
         for count in 1...3
