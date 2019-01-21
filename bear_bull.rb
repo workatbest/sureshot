@@ -12,8 +12,8 @@ class BearBull
     attr_accessor :start_date, :end_date 
   end
 
-  BEAR_BULL_COMAPRE=0.0025
-  DIFFERENCE_CANDLE=0.0025
+  BEAR_BULL_COMAPRE=0.002
+  DIFFERENCE_CANDLE=0.002
 
   def bear_bull_finder(timeseries, old_sym, csv)
     # check if the candle difference valid for 4 days
