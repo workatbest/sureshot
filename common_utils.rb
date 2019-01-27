@@ -12,7 +12,7 @@ class CommonUtils
         #timeseries = Alphavantage::Timeseries.new symbol: sym, key: SECRET_KEY
         break
       rescue Alphavantage::Error
-        sleep(25)
+        sleep(30)
         p 'retrying'
       end
     end
@@ -25,7 +25,7 @@ class CommonUtils
         data = Alphavantage::Indicator.new  function: indicator, symbol: sym, key: SECRET_KEY, time_period: time_period
         break
       rescue Alphavantage::Error
-        sleep(25)
+        sleep(30)
         p 'retrying'
       end
     end

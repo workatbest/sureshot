@@ -14,11 +14,12 @@ class BearBull
 
   BEAR_BULL_COMAPRE=0.002
   DIFFERENCE_CANDLE=0.002
+  CANDLES_COUNT=3
 
   def bear_bull_finder(timeseries, old_sym, csv)
     # check if the candle difference valid for 4 days
     found = true
-    for count in 0...4
+    for count in 0...(CANDLES_COUNT+1)
       #p timeseries.close[count][1], timeseries.open[count][1]
       base = timeseries.close[count][1].to_f < timeseries.open[count][1].to_f ? timeseries.close[count][1].to_f : timeseries.open[count][1].to_f
       if ((timeseries.close[count][1].to_f - timeseries.open[count][1].to_f).abs/base) < DIFFERENCE_CANDLE
@@ -34,7 +35,8 @@ class BearBull
       if (timeseries.close[1][1].to_f + (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE)) < timeseries.open[0][1].to_f && timeseries.open[1][1] > timeseries.open[0][1] && green_candle(timeseries.open[0][1], timeseries.close[0][1])
         # bull finder
         bull = true
-        for count in 1...3
+        for count in 1...CANDLES_COUNT
+          #p "bull---"
           #p " Prev open - #{timeseries.open[count+1][1]}  close #{timeseries.close[count+1][1]}"
           #p " today open - #{timeseries.open[count][1]}  close #{timeseries.close[count][1]}"
           #p (timeseries.open[count+1][1].to_f * BEAR_BULL_COMAPRE)
@@ -51,13 +53,14 @@ class BearBull
           break unless bull
         end
         if bull
-          p "Found bull ----  #{old_sym}"
+          p "Found bull----  #{old_sym}" 
           csv << [old_sym, 'BULL', timeseries.close[0][1], timeseries.close[1][1], date_to_s]  
         end
       elsif (timeseries.close[1][1].to_f - (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE)) > timeseries.open[0][1].to_f && timeseries.close[1][1] > timeseries.close[0][1] && red_candle(timeseries.open[0][1], timeseries.close[0][1])
         # bear finder
         bear = true
-        for count in 1...3
+        for count in 1...CANDLES_COUNT
+          #p "bear---"
           #p " Prev open - #{timeseries.open[count+1][1]}  close #{timeseries.close[count+1][1]}"
           #p " today open - #{timeseries.open[count][1]}  close #{timeseries.close[count][1]}"
           #p (timeseries.open[count+1][1].to_f * BEAR_BULL_COMAPRE)
