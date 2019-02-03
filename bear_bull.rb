@@ -32,7 +32,7 @@ class BearBull
       #p (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE)
       #p "Bear #{(timeseries.close[1][1].to_f - (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE))}"
       #p "Bull #{(timeseries.close[0][1].to_f - (timeseries.close[0][1].to_f * BEAR_BULL_COMAPRE))}"
-      if (timeseries.close[1][1].to_f + (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE)) < timeseries.open[0][1].to_f && timeseries.open[1][1] > timeseries.open[0][1] && green_candle(timeseries.open[0][1], timeseries.close[0][1])
+      if (timeseries.close[1][1].to_f + (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE)) < timeseries.open[0][1].to_f && timeseries.open[1][1] < timeseries.close[0][1] && timeseries.close[1][1] < timeseries.open[0][1] && green_candle(timeseries.open[0][1], timeseries.close[0][1])
         # bull finder
         bull = true
         for count in 1...CANDLES_COUNT
@@ -56,7 +56,7 @@ class BearBull
           p "Found bull----  #{old_sym}" 
           csv << [old_sym, 'BULL', timeseries.close[0][1], timeseries.close[1][1], date_to_s]  
         end
-      elsif (timeseries.close[1][1].to_f - (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE)) > timeseries.open[0][1].to_f && timeseries.close[1][1] > timeseries.close[0][1] && red_candle(timeseries.open[0][1], timeseries.close[0][1])
+      elsif (timeseries.close[1][1].to_f - (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE)) > timeseries.open[0][1].to_f && timeseries.close[1][1] > timeseries.open[0][1] && timeseries.open[1][1] > timeseries.close[0][1] && red_candle(timeseries.open[0][1], timeseries.close[0][1])
         # bear finder
         bear = true
         for count in 1...CANDLES_COUNT
