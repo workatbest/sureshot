@@ -13,7 +13,7 @@ class BearBull
   end
 
   BEAR_BULL_COMAPRE=0.002
-  DIFFERENCE_CANDLE=0.002
+  DIFFERENCE_CANDLE=0.003
   CANDLES_COUNT=3
 
   def bear_bull_finder(timeseries, old_sym, csv)
@@ -53,7 +53,7 @@ class BearBull
           break unless bull
         end
         if bull
-          p "Found bull----  #{old_sym}" 
+          p "<---------------------Found bull--------------------->  #{old_sym}" 
           csv << [old_sym, 'BULL', timeseries.close[0][1], timeseries.close[1][1], date_to_s]  
         end
       elsif (timeseries.close[1][1].to_f - (timeseries.close[1][1].to_f * BEAR_BULL_COMAPRE)) > timeseries.open[0][1].to_f && timeseries.close[1][1] > timeseries.open[0][1] && timeseries.open[1][1] > timeseries.close[0][1] && red_candle(timeseries.open[0][1], timeseries.close[0][1])
@@ -77,7 +77,7 @@ class BearBull
           break unless bear
         end
         if bear 
-          p "Found bear----  #{old_sym}" 
+          p "<---------------------Found bear--------------------->  #{old_sym}" 
           csv << [old_sym, 'BEAR', timeseries.close[0][1], timeseries.close[1][1], date_to_s]
         end
       end

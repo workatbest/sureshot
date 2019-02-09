@@ -50,7 +50,7 @@ class Indicators
       ema_data = CommonUtils.indicator_data(sym, 'EMA', 13)&.ema
       daily_data = CommonUtils.get_timeseries(sym, 'compact')&.close 
       if sma_data && sma_200_data && ema_data && daily_data
-        CSV.open("indicators/sma_ema.csv", 'a') do |csv|
+        CSV.open("indicators/sma_ema.csv", 'wb') do |csv|
           calculate_sma_ema(old_sym, csv, sma_data, sma_200_data, ema_data, daily_data)
         end
       end
