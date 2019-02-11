@@ -56,7 +56,7 @@
       }, 'text');
     }
     function chartFunction() {
-      var share = document.getElementById("nseList").value.split(":")[1];
+      var share = document.getElementById("nseList").value.split(":")[0];
       $.getJSON( "../volatile_data/summary.json", function( data ) {
         var items = [];
         $.each( data, function( key, val ) {
