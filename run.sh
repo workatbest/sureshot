@@ -8,14 +8,17 @@ do
         "Daily")
             echo "Running Daily Run"
             ruby volatility_trends.rb
+            break
             ;;
         "SMA-EMA")
             echo "Running SMA-EMA indicators"
             ruby indicators.rb
+            break
             ;;
         "BEAR-BULL")
             echo "Running BEAR-BULL indicators"
             ruby bear_bull.rb
+            break
             ;;
         "Quit")
             break
