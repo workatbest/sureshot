@@ -21,7 +21,17 @@ class Options
       daily_data = CommonUtils.get_timeseries(sym, 'compact')&.close 
       if sma_data && sma_200_data && daily_data
         CSV.open("indicators/options.csv", 'a') do |csv|
-          csv << [old_sym, sma_data[0][1].to_f, sma_200_data[0][1].to_f, daily_data[0][1]]
+          sma = sma_data[0][1].to_f
+          sma_200 = sma_200_data[0][1].to_f
+          close = daily_data[0][1].to_f
+          per = close * 0.15
+          res = false
+          if sma.round.between?((close - per).round, (close + per).round)
+            res = true
+          elsif sma_200.round.between?((close - per).round, (close + per).round)
+            res = true
+          end
+          csv << [old_sym, sma, sma_200, close,res]
         end
       end
     end

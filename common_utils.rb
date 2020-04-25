@@ -14,7 +14,6 @@ class CommonUtils
         break
       rescue Alphavantage::Error => e 
         sleep(30)
-        p 'get_timeseries retrying'
       end
     end
     timeseries
@@ -26,7 +25,7 @@ class CommonUtils
         data = Alphavantage::Indicator.new  function: indicator, symbol: CGI.escape(sym), key: SECRET_KEY, time_period: time_period
         break
       rescue Alphavantage::Error
-        sleep(30), sym, time_period
+        sleep(30)
       end
     end
     data

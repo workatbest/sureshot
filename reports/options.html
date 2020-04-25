@@ -51,7 +51,7 @@
             }
 
             d3.csv('../indicators/options.csv',function (data) {
-              var columns = ['Name', 'MA-50', 'MA-200', 'Close']
+              var columns = ['Name', 'MA-50', 'MA-200', 'Close', 'Found']
               tabulate(data,columns)
             })
         </script>
