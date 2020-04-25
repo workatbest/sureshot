@@ -43,7 +43,7 @@ class Indicators
     CommonUtils.indicators_list.each_line do |sym|
       sym.delete!("\n")
       old_sym = sym
-      sym = 'NSE:' + sym
+      sym = 'NSE:' + old_sym
       p "#{old_sym}"
       sma_data = CommonUtils.indicator_data(sym, 'SMA', 50)&.sma
       sma_200_data = CommonUtils.indicator_data(sym, 'SMA', 200)&.sma

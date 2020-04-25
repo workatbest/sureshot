@@ -14,7 +14,7 @@ class CommonUtils
         break
       rescue Alphavantage::Error => e 
         sleep(30)
-        p 'retrying'
+        p 'get_timeseries retrying'
       end
     end
     timeseries
@@ -26,8 +26,7 @@ class CommonUtils
         data = Alphavantage::Indicator.new  function: indicator, symbol: CGI.escape(sym), key: SECRET_KEY, time_period: time_period
         break
       rescue Alphavantage::Error
-        sleep(30)
-        p 'retrying'
+        sleep(30), sym, time_period
       end
     end
     data
@@ -40,5 +39,9 @@ class CommonUtils
 
   def self.indicators_list
     File.open('indicators_list.txt').read
+  end
+
+  def self.fno_list
+    File.open('FNO.txt').read
   end
 end
