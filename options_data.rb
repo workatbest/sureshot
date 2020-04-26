@@ -9,6 +9,16 @@ class Options
     Date.today.to_s
   end
 
+  def check_percent(num,sma,sma_200,close)
+    per = close * (num/100)
+    res = ''
+    if sma.round.between?((close - per).round, (close + per).round)
+      res = '*'
+    elsif sma_200.round.between?((close - per).round, (close + per).round)
+      res = '*'
+    end
+    res
+  end
   def sma_ema
     threads = []
     CommonUtils.fno_list.each_line do |sym|
@@ -24,14 +34,10 @@ class Options
           sma = sma_data[0][1].to_f
           sma_200 = sma_200_data[0][1].to_f
           close = daily_data[0][1].to_f
-          per = close * 0.15
-          res = false
-          if sma.round.between?((close - per).round, (close + per).round)
-            res = true
-          elsif sma_200.round.between?((close - per).round, (close + per).round)
-            res = true
-          end
-          csv << [old_sym, sma, sma_200, close,res]
+          res = check_percent(15.0,sma,sma_200,close)
+          res << check_percent(10.0,sma,sma_200,close) if res != ''
+          res << check_percent(5.0,sma,sma_200,close) if res != ''
+          csv << [old_sym, sma, sma_200, close,res] if res != ''
         end
       end
     end
