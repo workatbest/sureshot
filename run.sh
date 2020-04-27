@@ -1,7 +1,7 @@
 #/bin/bash
 
 PS3='Please enter your choice: '
-options=("Daily" "SMA-EMA" "BEAR-BULL" "Quit")
+options=("Daily" "SMA-EMA" "BEAR-BULL" "Options" "Quit")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -18,6 +18,11 @@ do
         "BEAR-BULL")
             echo "Running BEAR-BULL indicators"
             ruby bear_bull.rb
+            break
+            ;;
+        "Options")
+            echo "Running options indicators"
+            ruby options_data.rb
             break
             ;;
         "Quit")
