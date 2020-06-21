@@ -11,8 +11,11 @@ class CommonUtils
       begin
         timeseries = Alphavantage::Timeseries.new symbol: CGI.escape(sym), key: SECRET_KEY, outputsize: output
         #timeseries = Alphavantage::Timeseries.new symbol: sym, key: SECRET_KEY
+        p timeseries
         break
       rescue Alphavantage::Error => e 
+        p e 
+        p e.stacktrace
         sleep(30)
       end
     end
@@ -23,8 +26,11 @@ class CommonUtils
     for i in 0...5
       begin
         data = Alphavantage::Indicator.new  function: indicator, symbol: CGI.escape(sym), key: SECRET_KEY, time_period: time_period
+        p data
         break
-      rescue Alphavantage::Error
+      rescue Alphavantage::Error => e
+        p e 
+        p e.stacktrace
         sleep(30)
       end
     end
